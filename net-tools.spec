@@ -4,7 +4,7 @@
 #
 Name     : net-tools
 Version  : 1.60
-Release  : 17
+Release  : 18
 URL      : http://downloads.sourceforge.net/net-tools/net-tools-1.60.tar.bz2
 Source0  : http://downloads.sourceforge.net/net-tools/net-tools-1.60.tar.bz2
 Summary  : Basic Networking Tools
