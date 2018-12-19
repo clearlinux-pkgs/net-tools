@@ -1,0 +1,3 @@
+Configure miss: rarp.c:228:22: warning: format not a string literal and no format arguments [-Wformat-security]
+
+Configure miss: slattach.c:568:3: warning: format not a string literal and no format arguments [-Wformat-security]
