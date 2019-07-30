@@ -4,7 +4,7 @@
 #
 Name     : net-tools
 Version  : 1.60
-Release  : 21
+Release  : 22
 URL      : https://sourceforge.net/projects/net-tools/files/net-tools-1.60.tar.bz2
 Source0  : https://sourceforge.net/projects/net-tools/files/net-tools-1.60.tar.bz2
 Summary  : Basic Networking Tools
@@ -27,7 +27,6 @@ various other tools.
 Summary: bin components for the net-tools package.
 Group: Binaries
 Requires: net-tools-license = %{version}-%{release}
-Requires: net-tools-man = %{version}-%{release}
 
 %description bin
 bin components for the net-tools package.
@@ -66,32 +65,42 @@ man components for the net-tools package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1545263185
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564463238
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 make  %{?_smp_mflags}
 
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check ||:
 
 %install
-export SOURCE_DATE_EPOCH=1545263185
+export SOURCE_DATE_EPOCH=1564463238
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/net-tools
 cp COPYING %{buildroot}/usr/share/package-licenses/net-tools/COPYING
 %make_install
 %find_lang net-tools
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/hostname
+rm -f %{buildroot}/usr/share/man/de_DE/man1/hostname.1
+rm -f %{buildroot}/usr/share/man/fr_FR/man1/hostname.1
+rm -f %{buildroot}/usr/share/man/pt_BR/man1/hostname.1
+rm -f %{buildroot}/usr/share/man/man1/hostname.1
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/hostname
 /usr/bin/arp
 /usr/bin/dnsdomainname
 /usr/bin/domainname
@@ -111,10 +120,6 @@ cp COPYING %{buildroot}/usr/share/package-licenses/net-tools/COPYING
 
 %files man
 %defattr(0644,root,root,0755)
-%exclude /usr/share/man/de_DE/man1/hostname.1
-%exclude /usr/share/man/fr_FR/man1/hostname.1
-%exclude /usr/share/man/man1/hostname.1
-%exclude /usr/share/man/pt_BR/man1/hostname.1
 /usr/share/man/de_DE/man1/dnsdomainname.1
 /usr/share/man/de_DE/man1/domainname.1
 /usr/share/man/de_DE/man1/nisdomainname.1
