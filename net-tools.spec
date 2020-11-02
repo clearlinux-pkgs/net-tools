@@ -4,7 +4,7 @@
 #
 Name     : net-tools
 Version  : 1.60
-Release  : 22
+Release  : 23
 URL      : https://sourceforge.net/projects/net-tools/files/net-tools-1.60.tar.bz2
 Source0  : https://sourceforge.net/projects/net-tools/files/net-tools-1.60.tar.bz2
 Summary  : Basic Networking Tools
@@ -58,6 +58,7 @@ man components for the net-tools package.
 
 %prep
 %setup -q -n net-tools-1.60
+cd %{_builddir}/net-tools-1.60
 %patch1 -p1
 %patch2 -p1
 
@@ -66,11 +67,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564463238
+export SOURCE_DATE_EPOCH=1604360307
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 make  %{?_smp_mflags}
 
@@ -83,10 +84,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check ||:
 
 %install
-export SOURCE_DATE_EPOCH=1564463238
+export SOURCE_DATE_EPOCH=1604360307
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/net-tools
-cp COPYING %{buildroot}/usr/share/package-licenses/net-tools/COPYING
+cp %{_builddir}/net-tools-1.60/COPYING %{buildroot}/usr/share/package-licenses/net-tools/075d599585584bb0e4b526f5c40cb6b17e0da35a
 %make_install
 %find_lang net-tools
 ## Remove excluded files
@@ -116,7 +117,7 @@ rm -f %{buildroot}/usr/share/man/man1/hostname.1
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/net-tools/COPYING
+/usr/share/package-licenses/net-tools/075d599585584bb0e4b526f5c40cb6b17e0da35a
 
 %files man
 %defattr(0644,root,root,0755)
