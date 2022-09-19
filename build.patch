@@ -1,86 +1,13 @@
---- net-tools-1.60/lib/inet_sr.c~	2000-02-20 13:46:45.000000000 -0800
-+++ net-tools-1.60/lib/inet_sr.c	2013-01-06 07:32:30.784154554 -0800
-@@ -104,7 +104,7 @@
-        isnet = 1; break;
-     case 2:
-        isnet = 0; break;
--    default:
-+    default: ;
-     }
+diff --git a/Makefile b/Makefile
+index c29509d..7bb9abf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -56,7 +56,7 @@ PROGS	+= slattach
+ endif
  
-     /* Fill in the other fields. */
---- net-tools-1.60/hostname.c~	2001-04-08 10:04:23.000000000 -0700
-+++ net-tools-1.60/hostname.c	2013-01-06 07:33:36.390531962 -0800
-@@ -173,7 +173,7 @@
- 	    *p = '\0';
- 	printf("%s\n", hp->h_name);
- 	break;
--    default:
-+    default: ;
-     }
- }
- 
---- net-tools-1.60/hostname.c~	2013-01-06 07:33:36.000000000 -0800
-+++ net-tools-1.60/hostname.c	2013-01-06 07:34:39.504933549 -0800
-@@ -77,7 +77,7 @@
-         case EINVAL:
-             fprintf(stderr, _("%s: name too long\n"), program_name);
-             break;
--        default:
-+        default:;
-         }
- 	exit(1);
-     }
-@@ -97,7 +97,7 @@
- 	case EINVAL:
- 	    fprintf(stderr, _("%s: name too long\n"), program_name);
- 	    break;
--	default:
-+	default:;
- 	}
- 	exit(1);
-     };
-@@ -116,7 +116,7 @@
- 	case EINVAL:
- 	    fprintf(stderr, _("%s: name too long\n"), program_name);
- 	    break;
--	default:
-+	default:;
- 	}
- 	exit(1);
-     };
---- net-tools-1.60/Makefile~	2001-04-15 07:34:31.000000000 -0700
-+++ net-tools-1.60/Makefile	2013-01-06 07:36:40.460789864 -0800
-@@ -70,7 +70,7 @@
- #
- 
- # set the base of the Installation 
--# BASEDIR = /mnt
-+BASEDIR := $(DESTDIR)
- 
- # path to the net-lib support library. Default: lib
- NET_LIB_PATH = lib
---- net-tools-1.60/Makefile~	2001-04-15 10:34:31.000000000 -0400
-+++ net-tools-1.60/Makefile	2015-04-28 16:37:28.781393547 -0400
-@@ -113,8 +113,8 @@
- 
- NET_LIB = $(NET_LIB_PATH)/lib$(NET_LIB_NAME).a
- 
--CFLAGS	= $(COPTS) -I. -idirafter ./include/ -I$(NET_LIB_PATH)
--LDFLAGS	= $(LOPTS) -L$(NET_LIB_PATH)
-+CFLAGS	+= $(COPTS) -I. -idirafter ./include/ -I$(NET_LIB_PATH)
-+LDFLAGS	+= $(LOPTS) -L$(NET_LIB_PATH)
- 
- SUBDIRS	= man/ $(NET_LIB_PATH)/
- 
---- net-tools-1.60/Makefile~	2015-04-28 16:37:28.000000000 -0400
-+++ net-tools-1.60/Makefile	2015-04-28 17:02:16.992788344 -0400
-@@ -105,6 +105,8 @@
- 
- .EXPORT_ALL_VARIABLES:
- 
-+.NOTPARALLEL:
-+
- ifeq ("$(NET_LIB_PATH)","lib2")
- TOPDIR   = ..
- else
+ # Compiler and Linker Options
+-CFLAGS ?= -O2 -g
++CFLAGS ?= -O2 -g $(CFLAGS)
+ CFLAGS += -Wall
+ CFLAGS += -fno-strict-aliasing # code needs a lot of work before strict aliasing is safe
+ CPPFLAGS += -D_GNU_SOURCE

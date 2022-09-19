@@ -1,7 +1,9 @@
-diff -purN net-tools-1.60/config.h net-tools-1.60.new/config.h
---- net-tools-1.60/config.h	1969-12-31 16:00:00.000000000 -0800
-+++ net-tools-1.60.new/config.h	2013-01-06 07:25:19.965285854 -0800
-@@ -0,0 +1,74 @@
+diff --git a/config.h b/config.h
+new file mode 100644
+index 0000000..796101d
+--- /dev/null
++++ b/config.h
+@@ -0,0 +1,83 @@
 +/*
 +* config.h	Automatically generated configuration includefile
 +*
@@ -42,6 +44,7 @@ diff -purN net-tools-1.60/config.h net-tools-1.60.new/config.h
 +#define HAVE_AFECONET 0
 +#define HAVE_AFDECnet 0
 +#define HAVE_AFASH 0
++#define HAVE_AFBLUETOOTH 0
 +
 +/* 
 + * 
@@ -67,6 +70,8 @@ diff -purN net-tools-1.60/config.h net-tools-1.60.new/config.h
 +#define HAVE_HWHDLCLAPB 1
 +#define HAVE_HWIRDA 1
 +#define HAVE_HWEC 0
++#define HAVE_HWEUI64 0
++#define HAVE_HWIB 0
 +
 +/* 
 + * 
@@ -74,12 +79,20 @@ diff -purN net-tools-1.60/config.h net-tools-1.60.new/config.h
 + * 
 + */
 +#define HAVE_FW_MASQUERADE 1
++#define HAVE_ARP_TOOLS 1
++#define HAVE_HOSTNAME_TOOLS 1
++#define HAVE_HOSTNAME_SYMLINKS 1
 +#define HAVE_IP_TOOLS 0
 +#define HAVE_MII 0
-diff -purN net-tools-1.60/config.make net-tools-1.60.new/config.make
---- net-tools-1.60/config.make	1969-12-31 16:00:00.000000000 -0800
-+++ net-tools-1.60.new/config.make	2013-01-06 07:25:19.965285854 -0800
-@@ -0,0 +1,35 @@
++#define HAVE_PLIP_TOOLS 1
++#define HAVE_SERIAL_TOOLS 1
++#define HAVE_SELINUX 0
+diff --git a/config.make b/config.make
+new file mode 100644
+index 0000000..81e4db4
+--- /dev/null
++++ b/config.make
+@@ -0,0 +1,44 @@
 +I18N=1
 +HAVE_AFUNIX=1
 +HAVE_AFINET=1
@@ -93,6 +106,7 @@ diff -purN net-tools-1.60/config.make net-tools-1.60.new/config.make
 +# HAVE_AFECONET=0
 +# HAVE_AFDECnet=0
 +# HAVE_AFASH=0
++# HAVE_AFBLUETOOTH=0
 +HAVE_HWETHER=1
 +# HAVE_HWARC=0
 +# HAVE_HWSLIP=0
@@ -112,15 +126,25 @@ diff -purN net-tools-1.60/config.make net-tools-1.60.new/config.make
 +HAVE_HWHDLCLAPB=1
 +HAVE_HWIRDA=1
 +# HAVE_HWEC=0
++# HAVE_HWEUI64=0
++# HAVE_HWIB=0
 +HAVE_FW_MASQUERADE=1
++HAVE_ARP_TOOLS=1
++HAVE_HOSTNAME_TOOLS=1
++HAVE_HOSTNAME_SYMLINKS=1
 +# HAVE_IP_TOOLS=0
 +# HAVE_MII=0
-diff -purN net-tools-1.60/config.status net-tools-1.60.new/config.status
---- net-tools-1.60/config.status	1969-12-31 16:00:00.000000000 -0800
-+++ net-tools-1.60.new/config.status	2013-01-06 07:25:19.965285854 -0800
-@@ -0,0 +1,91 @@
++HAVE_PLIP_TOOLS=1
++HAVE_SERIAL_TOOLS=1
++# HAVE_SELINUX=0
+diff --git a/config.status b/config.status
+new file mode 100644
+index 0000000..187409c
+--- /dev/null
++++ b/config.status
+@@ -0,0 +1,100 @@
 +#
-+# config.in	Configure.sh source for the net-tools.
++# config.in	configure.sh source for the net-tools.
 +#		This file contains the definition of what the support
 +#		library contains.  Most of all, it defines which types
 +#		of address families and hardware we know of.
@@ -163,11 +187,11 @@ diff -purN net-tools-1.60/config.status net-tools-1.60.new/config.status
 +* course, welcome.  Answer `n' here if you have no support for
 +* internationalization on your system.
 +*
-+bool 'Does your system support GNU gettext?' I18N n
++bool 'Does your system support GNU gettext?' I18N y
 +*
 +*
 +*             Protocol Families.
-+* 
++*
 +bool 'UNIX protocol family' HAVE_AFUNIX y
 +bool 'INET (TCP/IP) protocol family' HAVE_AFINET y
 +bool 'INET6 (IPv6) protocol family' HAVE_AFINET6 y
@@ -180,6 +204,7 @@ diff -purN net-tools-1.60/config.status net-tools-1.60.new/config.status
 +bool 'Econet protocol family' HAVE_AFECONET n
 +bool 'DECnet protocol family' HAVE_AFDECnet n
 +bool 'Ash protocol family' HAVE_AFASH n
++bool 'Bluetooth protocol family' HAVE_AFBLUETOOTH n
 +*
 +*
 +*            Device Hardware types.
@@ -203,10 +228,18 @@ diff -purN net-tools-1.60/config.status net-tools-1.60.new/config.status
 +bool '(Cisco)-HDLC/LAPB support' HAVE_HWHDLCLAPB y
 +bool 'IrDA support' HAVE_HWIRDA y
 +bool 'Econet hardware support' HAVE_HWEC n
++bool 'Generic EUI-64 hardware support' HAVE_HWEUI64 n
++bool 'InfiniBand hardware support' HAVE_HWIB n
 +*
 +*
 +*           Other Features.
 +*
 +bool 'IP Masquerading support' HAVE_FW_MASQUERADE y
++bool 'Build arp and rarp' HAVE_ARP_TOOLS y
++bool 'Build hostname' HAVE_HOSTNAME_TOOLS y
++bool 'Install hostname NIS/YP symlinks' HAVE_HOSTNAME_SYMLINKS y
 +bool 'Build iptunnel and ipmaddr' HAVE_IP_TOOLS n
 +bool 'Build mii-tool' HAVE_MII n
++bool 'Build plipconfig' HAVE_PLIP_TOOLS y
++bool 'Build slattach' HAVE_SERIAL_TOOLS y
++bool 'SELinux support' HAVE_SELINUX n
